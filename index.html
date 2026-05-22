@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Tema 1 — Constitución Española | Opositar en Valencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --naranja: #d97706;
+    --naranja-claro: #fef3c7;
+    --naranja-borde: #f59e0b;
+    --azul-oscuro: #1e293b;
+    --texto: #374151;
+    --texto-suave: #6b7280;
+    --borde: #e5e7eb;
+    --fondo: #fafaf9;
+    --blanco: #ffffff;
+    --verde: #166534;
+    --verde-bg: #f0fdf4;
+    --verde-borde: #86efac;
+    --rojo: #991b1b;
+    --rojo-bg: #fef2f2;
+    --rojo-borde: #fca5a5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--blanco);
+    border-bottom: 1px solid var(--borde);
+    padding: 0;
+  }
+  .header-top {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.4rem 1.5rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+  .header-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .header-textos { flex: 1; }
+  .header-site {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--naranja);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .header-titulo {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 0.88rem;
+    color: var(--texto-suave);
+    margin-top: 4px;
+  }
+  .header-meta {
+    background: var(--naranja-claro);
+    border-top: 1px solid #fde68a;
+    padding: 0.55rem 1.5rem;
+  }
+  .header-meta-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.83rem;
+    color: #92400e;
+    font-weight: 500;
+  }
+  .header-meta-inner span::before { margin-right: 4px; }
+
+  /* ── BARRA PROGRESO ── */
+  .barra-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--blanco);
+    border-bottom: 1px solid var(--borde);
+    padding: 0.6rem 1.5rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  }
+  .barra-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .barra-track {
+    flex: 1;
+    height: 6px;
+    background: #f3f4f6;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .barra-fill {
+    height: 100%;
+    background: var(--naranja);
+    border-radius: 99px;
+    transition: width 0.35s ease;
+    width: 0%;
+  }
+  .barra-num {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    white-space: nowrap;
+    min-width: 52px;
+  }
+  .barra-score {
+    font-size: 13px;
+    color: var(--texto-suave);
+    white-space: nowrap;
+  }
+  .barra-score .ok { color: var(--verde); font-weight: 600; }
+  .barra-score .ko { color: var(--rojo); font-weight: 600; }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+  }
+
+  /* ── CARD PREGUNTA ── */
+  .card {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1.4rem;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.06); }
+
+  .card-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--naranja);
+    margin-bottom: 0.5rem;
+  }
+  .card-pregunta {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.55;
+    color: var(--azul-oscuro);
+    margin-bottom: 1.1rem;
+  }
+
+  /* ── OPCIONES ── */
+  .opciones { display: flex; flex-direction: column; gap: 0.45rem; }
+  .opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--borde);
+    border-radius: 7px;
+    cursor: pointer;
+    background: var(--blanco);
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.93rem;
+    color: var(--texto);
+    line-height: 1.5;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+  }
+  .opcion:hover:not(:disabled) {
+    border-color: var(--naranja-borde);
+    background: var(--naranja-claro);
+  }
+  .opcion .letra {
+    font-weight: 700;
+    color: var(--naranja);
+    min-width: 18px;
+    font-size: 0.85rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .opcion.correcta {
+    border-color: var(--verde-borde);
+    background: var(--verde-bg);
+    color: var(--verde);
+  }
+  .opcion.correcta .letra { color: #15803d; }
+  .opcion.incorrecta {
+    border-color: var(--rojo-borde);
+    background: var(--rojo-bg);
+    color: var(--rojo);
+  }
+  .opcion.incorrecta .letra { color: var(--rojo); }
+  .opcion:disabled { cursor: default; }
+
+  /* ── EXPLICACIÓN ── */
+  .explicacion {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.9rem 1rem 0.9rem 1.1rem;
+    background: #fffbeb;
+    border-left: 3px solid var(--naranja);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--texto);
+  }
+  .explicacion.visible { display: block; animation: fadeIn 0.22s ease; }
+  .explicacion strong { color: var(--azul-oscuro); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESULTADO FINAL ── */
+  .resultado {
+    display: none;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 2.5rem 2rem 2rem;
+    margin: 1.5rem 0 2rem;
+    text-align: center;
+  }
+  .resultado.visible { display: block; animation: fadeIn 0.3s ease; }
+  .resultado-eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--naranja);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .resultado h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    margin-bottom: 0.3rem;
+  }
+  .resultado-nota {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    line-height: 1;
+    margin: 1rem 0 0.3rem;
+    font-family: 'Lora', serif;
+  }
+  .resultado-nota span { color: var(--naranja); }
+  .calif-badge {
+    display: inline-block;
+    padding: 5px 16px;
+    border-radius: 99px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.6rem 0 1.5rem;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+  }
+  .stat {
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 0.9rem 0.5rem;
+  }
+  .stat-num { font-size: 1.9rem; font-weight: 700; font-family: 'Lora', serif; }
+  .stat-lab { font-size: 0.78rem; color: var(--texto-suave); margin-top: 2px; }
+  .resultado-hint {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-bottom: 1.2rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.7rem 1.6rem;
+    border-radius: 7px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+  .btn-naranja {
+    background: var(--naranja);
+    color: white;
+  }
+  .btn-naranja:hover { background: #b45309; transform: translateY(-1px); }
+
+  /* ── SEPARADOR ── */
+  .divider {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+    margin: 2rem 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--borde);
+  }
+
+  @media (max-width: 580px) {
+    main { padding: 1.2rem 1rem 4rem; }
+    .card { padding: 1.1rem 1.1rem; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .header-top { padding: 1rem; gap: 0.8rem; }
+    .header-meta { padding: 0.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <img class="header-logo"
+      src="https://opositorgva.wordpress.com/wp-content/uploads/2024/04/cropped-opositar-en-valencia-logo-sin-fondo.png"
+      alt="Opositar en Valencia"
+      onerror="this.style.display='none'">
+    <div class="header-textos">
+      <div class="header-site">Opositar en Valencia · GVA</div>
+      <div class="header-titulo">Tema 1 — La Constitución Española de 1978</div>
+      <div class="header-sub">Título Preliminar · Título I: Derechos y Deberes Fundamentales</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="header-meta-inner">
+      <span>📋 50 preguntas</span>
+      <span>🎯 Nivel medio-alto</span>
+      <span>🔀 Orden aleatorio en cada intento</span>
+      <span>✅ Explicación en cada respuesta</span>
+    </div>
+  </div>
+</header>
+
+<div class="barra-wrap">
+  <div class="barra-inner">
+    <div class="barra-track"><div class="barra-fill" id="barraFill"></div></div>
+    <span class="barra-num" id="barraNum">0 / 50</span>
+    <span class="barra-score"><span class="ok" id="scoreOk">✓ 0</span> &nbsp;<span class="ko" id="scoreKo">✗ 0</span></span>
+  </div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+const BANCO = [
+  {
+    p: "El artículo 1.1 de la Constitución Española define España como un Estado social y democrático de Derecho. ¿Cuáles son los cuatro valores superiores de su ordenamiento jurídico según dicho artículo?",
+    ops: ["Libertad, igualdad, fraternidad y solidaridad", "Libertad, justicia, igualdad y pluralismo político", "Democracia, justicia, igualdad y pluralismo político", "Libertad, justicia, solidaridad y pluralismo político"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 1.1 CE establece que España «propugna como valores superiores de su ordenamiento jurídico la libertad, la justicia, la igualdad y el pluralismo político». La opción A confunde con la divisa de la Revolución Francesa; la C incluye «democracia» que no figura; la D sustituye «igualdad» por «solidaridad»."
+  },
+  {
+    p: "Según el artículo 1.2 CE, ¿en quién reside la soberanía nacional?",
+    ops: ["En las Cortes Generales", "En el Rey, como jefe del Estado", "En el pueblo español", "En el Estado y sus instituciones"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 1.2 CE dispone que «la soberanía nacional reside en el pueblo español, del que emanan los poderes del Estado». Este principio de soberanía popular es uno de los pilares del Estado democrático."
+  },
+  {
+    p: "¿Qué forma política establece el artículo 1.3 CE para el Estado español?",
+    ops: ["República parlamentaria", "Monarquía constitucional", "Monarquía parlamentaria", "Estado federal"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 1.3 CE establece que «la forma política del Estado español es la Monarquía parlamentaria». La distinción con «monarquía constitucional» es relevante: la parlamentaria implica que el Gobierno responde ante el Parlamento, no ante el Monarca."
+  },
+  {
+    p: "El artículo 2 CE proclama la indisoluble unidad de la Nación española y, a su vez:",
+    ops: ["Prohíbe cualquier reconocimiento de autonomías regionales", "Reconoce y garantiza el derecho a la autonomía de las nacionalidades y regiones", "Establece un Estado federal con soberanía compartida", "Reconoce únicamente comunidades históricas con derechos forales"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 2 CE combina la unidad de la Nación española (indivisible) con el reconocimiento del derecho a la autonomía de las nacionalidades y regiones, junto con el principio de solidaridad entre todas ellas."
+  },
+  {
+    p: "En relación con las lenguas españolas, el artículo 3 CE establece que el castellano es la lengua oficial del Estado y que todos los españoles tienen el deber de conocerla. ¿Existe el mismo deber respecto a las demás lenguas cooficiales?",
+    ops: ["Sí, existe idéntico deber de conocerlas en toda España", "No, respecto a las otras lenguas solo existe el derecho a usarlas, no el deber de conocerlas", "Sí, pero solo para los funcionarios de las respectivas CCAA", "Solo si así lo establece el Estatuto de Autonomía correspondiente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 3.1 CE impone el deber de conocer el castellano; el art. 3.2 solo reconoce la cooficialidad de las demás lenguas en sus CCAA, sin imponer ese deber. El Tribunal Constitucional ha confirmado esta asimetría."
+  },
+  {
+    p: "Según el artículo 4.1 CE, ¿cuál es la composición y proporciones de la bandera de España?",
+    ops: ["Tres franjas verticales, roja, amarilla y roja, siendo la amarilla de doble anchura", "Tres franjas horizontales, roja, amarilla y roja, siendo la amarilla de doble anchura que cada una de las rojas", "Tres franjas horizontales iguales en rojo, amarillo y rojo", "Dos franjas rojas flanqueando una franja amarilla de igual anchura"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 4.1 CE es preciso: «tres franjas horizontales, roja, amarilla y roja, siendo la amarilla de doble anchura que cada una de las rojas». Las franjas son horizontales (no verticales) y la amarilla mide el doble que cada roja."
+  },
+  {
+    p: "Sobre las banderas de las Comunidades Autónomas, el artículo 4.2 CE indica que:",
+    ops: ["Solo pueden utilizarse en el interior de los edificios autonómicos", "Se utilizarán junto a la bandera de España en los edificios públicos y actos oficiales de la CCAA", "Prevalecerán sobre la bandera de España en el territorio autonómico", "Su reconocimiento es obligatorio para todas las CCAA aunque no lo contemplen sus Estatutos"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 4.2 CE establece que las banderas autonómicas «se utilizarán junto a la bandera de España en sus edificios públicos y en sus actos oficiales». No prevalecen sobre la bandera nacional ni su uso es obligatorio si el Estatuto no las contempla."
+  },
+  {
+    p: "Los partidos políticos se regulan en el artículo 6 CE. ¿Qué requisito establece dicho artículo para su estructura interna y funcionamiento?",
+    ops: ["Deben ser pluripartidistas y aconfesionales", "Deberán ser democráticos", "Deben inscribirse en el registro del Ministerio del Interior", "Han de respetar únicamente la Constitución, no la ley ordinaria"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 6 CE exige que la «estructura interna y funcionamiento» de los partidos «deberán ser democráticos». Esta exigencia de democracia interna los distingue de las asociaciones ordinarias."
+  },
+  {
+    p: "El artículo 8 CE encomienda a las Fuerzas Armadas una triple misión. ¿Cuál de las siguientes NO figura en dicho artículo?",
+    ops: ["Garantizar la soberanía e independencia de España", "Defender la integridad territorial", "Proteger el ordenamiento constitucional", "Colaborar en la lucha contra el terrorismo interior"],
+    c: 3,
+    exp: "<strong>Respuesta correcta: D.</strong> El art. 8.1 CE atribuye a las FAS la misión de «garantizar la soberanía e independencia de España, defender su integridad territorial y el ordenamiento constitucional». La lucha contra el terrorismo interior corresponde a las Fuerzas y Cuerpos de Seguridad del Estado (art. 104 CE)."
+  },
+  {
+    p: "El principio de irretroactividad recogido en el artículo 9.3 CE tiene un alcance específico. ¿A qué tipo de disposiciones se refiere?",
+    ops: ["A todas las disposiciones normativas sin excepción", "A las disposiciones sancionadoras no favorables o restrictivas de derechos individuales", "Únicamente a las normas de rango legal", "A las disposiciones que afecten a los derechos fundamentales del Capítulo II Título I"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 9.3 CE garantiza «la irretroactividad de las disposiciones sancionadoras no favorables o restrictivas de derechos individuales». No se aplica a cualquier norma: las disposiciones favorables al reo o ampliadoras de derechos sí pueden tener efecto retroactivo."
+  },
+  {
+    p: "¿Qué garantías establece el artículo 9.3 CE además del principio de legalidad y la irretroactividad?",
+    ops: ["Jerarquía normativa, publicidad de las normas, seguridad jurídica, responsabilidad e interdicción de la arbitrariedad de los poderes públicos", "Separación de poderes, tutela judicial efectiva y reserva de ley", "Habeas corpus, presunción de inocencia y derecho a la defensa", "Principio de proporcionalidad, eficacia administrativa y control parlamentario"],
+    c: 0,
+    exp: "<strong>Respuesta correcta: A.</strong> El art. 9.3 CE enumera: legalidad, jerarquía normativa, publicidad de las normas, irretroactividad de las disposiciones sancionadoras no favorables, seguridad jurídica, responsabilidad e interdicción de la arbitrariedad de los poderes públicos."
+  },
+  {
+    p: "El artículo 10.1 CE establece el fundamento del orden político y la paz social. ¿Cuáles son los elementos que lo integran?",
+    ops: ["La democracia, la solidaridad, la justicia y la igualdad", "La dignidad de la persona, los derechos inviolables inherentes, el libre desarrollo de la personalidad, el respeto a la ley y a los derechos de los demás", "Los derechos fundamentales, el Estado de Derecho y la soberanía popular", "La Constitución, los tratados internacionales y la jurisprudencia constitucional"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 10.1 CE enumera como fundamento del orden político y la paz social: la dignidad de la persona, los derechos inviolables que le son inherentes, el libre desarrollo de la personalidad, el respeto a la ley y a los derechos de los demás."
+  },
+  {
+    p: "Según el artículo 10.2 CE, las normas relativas a los derechos fundamentales se interpretarán de conformidad con:",
+    ops: ["Las leyes orgánicas que los desarrollen y la jurisprudencia del TC", "La Declaración Universal de Derechos Humanos y los tratados y acuerdos internacionales sobre las mismas materias ratificados por España", "El derecho comunitario europeo y los convenios del Consejo de Europa", "Los principios generales del derecho y el derecho comparado"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 10.2 CE establece que las normas de derechos fundamentales «se interpretarán de conformidad con la Declaración Universal de Derechos Humanos y los tratados y acuerdos internacionales sobre las mismas materias ratificados por España». Actúa como canon hermenéutico, no como fuente directa de derechos."
+  },
+  {
+    p: "¿A qué edad se adquiere la mayoría de edad en España según la Constitución?",
+    ops: ["A los dieciséis años", "A los diecisiete años", "A los dieciocho años", "A los veintiún años"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 12 CE establece que «los españoles son mayores de edad a los dieciocho años». Este precepto tiene rango constitucional, aunque su concreción se desarrolla en el Código Civil."
+  },
+  {
+    p: "El artículo 13.2 CE reserva determinados derechos a los españoles. ¿Qué excepción establece para los extranjeros?",
+    ops: ["El derecho de asilo en condiciones de reciprocidad", "El derecho de sufragio activo y pasivo en las elecciones municipales atendiendo a criterios de reciprocidad", "El acceso a la función pública en condiciones de igualdad", "El derecho a la educación básica gratuita"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 13.2 CE establece que solo los españoles son titulares de los derechos del art. 23, pero añade que «atendiendo a criterios de reciprocidad, podrá establecerse por tratado o ley para el derecho de sufragio activo y pasivo en las elecciones municipales». Es la única excepción constitucional para extranjeros en materia electoral."
+  },
+  {
+    p: "En materia de extradición, ¿qué establece el artículo 13.3 CE respecto a los delitos políticos?",
+    ops: ["Podrán ser objeto de extradición si así lo prevé un tratado bilateral", "Quedan excluidos de la extradición, no considerándose como tales los actos de terrorismo", "Solo podrán extraditarse si el Estado requirente ofrece garantías procesales suficientes", "Se excluyen salvo que los cometa un extranjero en territorio español"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 13.3 CE establece una doble regla: los delitos políticos quedan excluidos de la extradición, pero a continuación aclara que los actos de terrorismo no se considerarán delitos políticos. Esta previsión evita que terroristas invoquen la protección del «delito político»."
+  },
+  {
+    p: "El artículo 15 CE garantiza el derecho a la vida e integridad física y moral. ¿Qué excepción contempla respecto a la pena de muerte?",
+    ops: ["La pena de muerte queda abolida en todo caso y circunstancia", "Queda abolida salvo lo que puedan disponer las leyes penales militares para tiempos de guerra", "Se mantiene para delitos de terrorismo con resultado de muerte", "El Parlamento puede restablecerla mediante ley orgánica"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 15 CE abole la pena de muerte «salvo lo que puedan disponer las leyes penales militares para tiempos de guerra». Esta excepción fue posteriormente suprimida por la LO 11/1995 del CPM, quedando abolida también en el ámbito militar."
+  },
+  {
+    p: "El artículo 16.3 CE dispone que «ninguna confesión tendrá carácter estatal». ¿Qué obligación impone expresamente a los poderes públicos?",
+    ops: ["Mantendrán neutralidad absoluta y no podrán financiar ninguna confesión religiosa", "Tendrán en cuenta las creencias religiosas de la sociedad española y mantendrán relaciones de cooperación con la Iglesia Católica y las demás confesiones", "Establecerán un sistema de financiación equitativo entre todas las confesiones reconocidas", "Garantizarán únicamente la libertad de culto en espacios privados"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 16.3 CE combina la aconfesionalidad del Estado con la obligación de que los poderes públicos «tendrán en cuenta las creencias religiosas de la sociedad española y mantendrán las consiguientes relaciones de cooperación con la Iglesia Católica y las demás confesiones». No impone neutralidad absoluta sino laicidad positiva."
+  },
+  {
+    p: "El artículo 17.2 CE fija un plazo máximo para la detención preventiva. ¿Cuál es y qué alternativas prevé al concluirlo?",
+    ops: ["48 horas; el detenido debe ser puesto en libertad o a disposición judicial", "72 horas; el detenido debe ser puesto en libertad o a disposición de la autoridad judicial", "24 horas prorrogables otras 24; el detenido debe comparecer ante el juez", "72 horas prorrogables a 96 en casos de terrorismo"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 17.2 CE establece que «en todo caso, en el plazo máximo de setenta y dos horas, el detenido deberá ser puesto en libertad o a disposición de la autoridad judicial». La prórroga a 96 horas en terrorismo se prevé en legislación ordinaria, no en este apartado constitucional."
+  },
+  {
+    p: "El procedimiento de habeas corpus se menciona en el artículo 17.4 CE. ¿Cuál es su finalidad constitucional?",
+    ops: ["Garantizar el derecho a intérprete en las diligencias policiales", "Producir la inmediata puesta a disposición judicial de toda persona detenida ilegalmente", "Controlar la legalidad de los registros domiciliarios", "Impugnar ante los tribunales la adopción de medidas cautelares penales"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 17.4 CE establece que la ley regulará un procedimiento de habeas corpus para «producir la inmediata puesta a disposición judicial de toda persona detenida ilegalmente». Su regulación se desarrolla en la LO 6/1984."
+  },
+  {
+    p: "El artículo 18.2 CE declara la inviolabilidad del domicilio. ¿En qué supuestos puede practicarse una entrada o registro sin consentimiento del titular ni resolución judicial?",
+    ops: ["Nunca; siempre se requiere autorización judicial o consentimiento del titular", "En caso de flagrante delito", "Cuando exista riesgo grave para la seguridad pública y lo ordene la autoridad gubernativa", "Cuando lo autorice el Ministerio Fiscal en diligencias urgentes"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 18.2 CE establece la inviolabilidad domiciliaria con dos excepciones: consentimiento del titular o resolución judicial. La única excepción adicional que contempla la CE expresamente es «el caso de flagrante delito»."
+  },
+  {
+    p: "¿Qué garantía establece el artículo 18.3 CE en relación con las comunicaciones?",
+    ops: ["Protege únicamente las comunicaciones telefónicas y postales de los ciudadanos españoles", "Garantiza el secreto de las comunicaciones y, en especial, de las postales, telegráficas y telefónicas, salvo resolución judicial", "Exige autorización parlamentaria para intervenir cualquier comunicación", "Prohíbe toda intervención de comunicaciones incluso mediando resolución judicial"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 18.3 CE garantiza el secreto de las comunicaciones con mención especial de las postales, telegráficas y telefónicas. La única excepción prevista en la CE es la resolución judicial."
+  },
+  {
+    p: "El artículo 19 CE reconoce el derecho a la libertad de circulación. ¿Por qué motivos establece expresamente que no podrá ser limitado?",
+    ops: ["Por motivos de orden público o emergencia nacional", "Por motivos políticos o ideológicos", "Por razón de raza, sexo, religión u opinión", "Nunca; la CE no establece ningún límite en este artículo"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 19 CE añade expresamente que el derecho de libre circulación y salida de España «no podrá ser limitado por motivos políticos o ideológicos». Esta previsión responde a la experiencia del franquismo."
+  },
+  {
+    p: "Según el artículo 20.1.d) CE, el derecho a comunicar o recibir información veraz incluye dos garantías específicas para los profesionales de la comunicación. ¿Cuáles son?",
+    ops: ["El secreto de las fuentes y la inmunidad periodística", "La cláusula de conciencia y el secreto profesional", "La libertad de publicación y la exención de censura previa", "El acceso a documentos públicos y la protección de datos"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 20.1.d) CE encomienda a la ley regular «el derecho a la cláusula de conciencia y al secreto profesional en el ejercicio de estas libertades». Ambas garantías protegen la independencia editorial de los profesionales de la información."
+  },
+  {
+    p: "El artículo 20.5 CE establece una reserva de jurisdicción en materia de secuestro de publicaciones. ¿Qué exige?",
+    ops: ["El secuestro puede acordarlo la autoridad gubernativa en caso de urgencia, con posterior control judicial", "El secuestro solo podrá acordarse en virtud de resolución judicial", "El secuestro requiere autorización previa del Defensor del Pueblo", "El secuestro puede ordenarlo el Ministerio Fiscal en delitos flagrantes"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 20.5 CE es categórico: «sólo podrá acordarse el secuestro de publicaciones, grabaciones y otros medios de información en virtud de resolución judicial». Refuerza así la prohibición de censura previa del art. 20.2 CE."
+  },
+  {
+    p: "El artículo 21 CE regula el derecho de reunión. Para las reuniones en lugares de tránsito público y manifestaciones, ¿qué exige la Constitución?",
+    ops: ["Autorización previa de la autoridad competente", "Comunicación previa a la autoridad", "Notificación a la Delegación del Gobierno con 15 días de antelación", "Ningún requisito; solo pueden prohibirse si ocurre un delito flagrante"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 21.2 CE exige «comunicación previa» (no autorización) para reuniones en lugares de tránsito público y manifestaciones. La autoridad solo podrá prohibirlas cuando existan «razones fundadas de alteración del orden público, con peligro para personas o bienes»."
+  },
+  {
+    p: "Las asociaciones ilegales se regulan en el artículo 22 CE. ¿Cuáles son los supuestos de ilegalidad que contempla?",
+    ops: ["Las que atenten contra el orden público o los valores constitucionales", "Las que persigan fines o utilicen medios tipificados como delito", "Las de carácter secreto, paramilitar o que promuevan la violencia", "Las que no estén inscritas en el registro correspondiente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 22.2 CE establece que «las asociaciones que persigan fines o utilicen medios tipificados como delito son ilegales». El art. 22.5 prohíbe además las asociaciones secretas y paramilitares, pero la ilegalidad por contenido se refiere a fines o medios delictivos."
+  },
+  {
+    p: "¿Qué exige el artículo 22 CE para que una asociación pueda ser disuelta o suspendida en sus actividades?",
+    ops: ["Resolución del Ministerio del Interior con control parlamentario posterior", "Ley orgánica aprobada por mayoría absoluta del Congreso", "Resolución judicial motivada", "Acuerdo del Consejo de Ministros con informe del Consejo de Estado"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 22.4 CE establece que «las asociaciones sólo podrán ser disueltas o suspendidas en sus actividades en virtud de resolución judicial motivada». Esta reserva jurisdiccional garantiza la independencia del derecho de asociación frente al poder ejecutivo."
+  },
+  {
+    p: "El artículo 23.2 CE garantiza el acceso a funciones y cargos públicos. ¿Con qué condición?",
+    ops: ["En condiciones de igualdad, con los requisitos que señalen las leyes", "Sin ningún requisito previo; el acceso es libre para todos los ciudadanos", "Solo para los españoles mayores de edad que no estén incursos en causa de incapacidad", "Con sujeción a los criterios de mérito, capacidad e igualdad fijados directamente por la CE"],
+    c: 0,
+    exp: "<strong>Respuesta correcta: A.</strong> El art. 23.2 CE dispone que los ciudadanos «tienen derecho a acceder en condiciones de igualdad a las funciones y cargos públicos, con los requisitos que señalen las leyes». El TC ha interpretado que comprende también la permanencia y el ejercicio del cargo."
+  },
+  {
+    p: "El artículo 24.1 CE consagra la tutela judicial efectiva. ¿Qué prohíbe expresamente en ningún caso?",
+    ops: ["La dilación indebida del proceso", "La indefensión", "La doble sanción por los mismos hechos", "La condena sin audiencia previa al interesado"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 24.1 CE garantiza que «todas las personas tienen derecho a obtener la tutela efectiva de los jueces y tribunales (…) sin que, en ningún caso, pueda producirse indefensión». La indefensión es la prohibición más destacada de este apartado."
+  },
+  {
+    p: "El artículo 24.2 CE reconoce la presunción de inocencia. ¿A qué ámbito se extiende, según la doctrina constitucional?",
+    ops: ["Exclusivamente al orden penal", "Al orden penal y al procedimiento sancionador administrativo", "A todos los órdenes jurisdiccionales sin excepción", "Solo al proceso penal de adultos, no a la justicia de menores"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> Aunque el art. 24.2 CE recoge la presunción de inocencia en el contexto del proceso penal, el TC ha extendido su aplicación al procedimiento sancionador administrativo. No alcanza todos los órdenes sin excepción."
+  },
+  {
+    p: "El principio de legalidad penal del artículo 25.1 CE prohíbe condenar por acciones u omisiones que no constituyeran infracción en el momento de producirse. ¿A qué tipos de infracciones se extiende expresamente?",
+    ops: ["Solo a delitos y faltas del orden penal", "A delitos, faltas o infracciones administrativas", "A cualquier tipo de responsabilidad civil, penal o administrativa", "Únicamente a los delitos castigados con pena privativa de libertad"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 25.1 CE extiende el principio de legalidad a «delito, falta o infracción administrativa». Esta extensión al ámbito administrativo sancionador es una característica destacada del modelo constitucional español."
+  },
+  {
+    p: "Según el artículo 25.2 CE, ¿hacia qué finalidad deben estar orientadas las penas privativas de libertad y las medidas de seguridad?",
+    ops: ["La retribución proporcional al daño causado y la disuasión general", "La reeducación y reinserción social", "El aislamiento preventivo y la protección de la sociedad", "La reparación del daño a la víctima y la resocialización del infractor"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 25.2 CE establece que «las penas privativas de libertad y las medidas de seguridad estarán orientadas hacia la reeducación y reinserción social». El TC ha precisado que no es el único fin posible de la pena, sino la orientación que deben tener las políticas penitenciarias."
+  },
+  {
+    p: "El artículo 26 CE establece una prohibición absoluta de ciertos tribunales. ¿A cuáles se refiere?",
+    ops: ["Tribunales militares en tiempo de paz", "Tribunales de Honor en la Administración civil y organizaciones profesionales", "Tribunales de excepción para cualquier tipo de infracción", "Jurisdicciones especiales para aforados"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 26 CE prohíbe los «Tribunales de Honor en el ámbito de la Administración civil y de las organizaciones profesionales». Eran utilizados históricamente para imponer sanciones extrajudiales y sin garantías procesales."
+  },
+  {
+    p: "El artículo 27 CE regula el derecho a la educación con 10 apartados. ¿Qué establece respecto a la enseñanza básica?",
+    ops: ["La enseñanza básica es voluntaria pero gratuita", "La enseñanza básica es obligatoria y gratuita", "La enseñanza básica es obligatoria pero puede ser de pago en centros privados", "La enseñanza hasta los 16 años es obligatoria y gratuita"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 27.4 CE establece que «la enseñanza básica es obligatoria y gratuita». Es uno de los artículos más extensos del Título I, reflejo del consenso constitucional para conciliar la enseñanza pública y privada."
+  },
+  {
+    p: "El artículo 28.1 CE reconoce el derecho de sindicación. ¿Para quiénes puede limitarse o exceptuarse dicho derecho?",
+    ops: ["Para los empleados públicos y los trabajadores de sectores estratégicos", "Para las Fuerzas o Institutos armados o los demás Cuerpos sometidos a disciplina militar", "Para los trabajadores de empresas con menos de 10 empleados", "Para los funcionarios de cuerpos con funciones de seguridad pública"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 28.1 CE permite a la ley «limitar o exceptuar el ejercicio de este derecho a las Fuerzas o Institutos armados o a los demás Cuerpos sometidos a disciplina militar». Para los funcionarios públicos la ley solo puede regular las «peculiaridades» de su ejercicio."
+  },
+  {
+    p: "En relación con el derecho de huelga (art. 28.2 CE), ¿qué exigencia establece la Constitución para la ley que lo regule?",
+    ops: ["Establecer un preaviso mínimo de cinco días hábiles", "Fijar las garantías precisas para asegurar el mantenimiento de los servicios esenciales de la comunidad", "Determinar los sectores en que la huelga está prohibida por razones de interés general", "Exigir la convocatoria por sindicatos con representatividad acreditada"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 28.2 CE exige que la ley que regule la huelga «establecerá las garantías precisas para asegurar el mantenimiento de los servicios esenciales de la comunidad». Es la única condición que la CE impone expresamente al legislador."
+  },
+  {
+    p: "El artículo 29 CE regula el derecho de petición. ¿Qué restricción específica establece para los militares?",
+    ops: ["Los militares no pueden ejercer este derecho en ningún caso", "Los miembros de FAS o Cuerpos de disciplina militar solo pueden ejercerlo individualmente y con arreglo a su legislación específica", "Solo pueden ejercerlo en materias ajenas al servicio y a través de sus representantes", "Necesitan autorización previa del mando para cualquier petición"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 29.2 CE matiza que los militares «podrán ejercer este derecho sólo individualmente y con arreglo a lo dispuesto en su legislación específica». El derecho de petición colectiva queda así excluido para ellos."
+  },
+  {
+    p: "El artículo 31 CE regula el deber de contribuir al sostenimiento de gastos públicos. ¿Qué principios debe respetar el sistema tributario?",
+    ops: ["Igualdad, progresividad y no confiscatoriedad", "Equidad, suficiencia y eficacia recaudatoria", "Legalidad, generalidad y capacidad económica", "Proporcionalidad, generalidad y justicia distributiva"],
+    c: 0,
+    exp: "<strong>Respuesta correcta: A.</strong> El art. 31.1 CE exige que el sistema tributario esté «inspirado en los principios de igualdad y progresividad que, en ningún caso, tendrá alcance confiscatorio» y que responda a la capacidad económica de cada contribuyente."
+  },
+  {
+    p: "El artículo 33 CE regula el derecho de propiedad privada y la herencia. ¿Qué papel atribuye a la función social de estos derechos?",
+    ops: ["Les suprime su contenido patrimonial cuando así lo exija el interés general", "Delimitará su contenido de acuerdo con las leyes", "Permite la expropiación sin indemnización si lo justifica el interés colectivo", "Garantiza que el Estado puede regular su ejercicio pero no restringirlo"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 33.2 CE establece que «la función social de estos derechos delimitará su contenido, de acuerdo con las leyes». El art. 33.3 añade que la privación de bienes por expropiación requiere causa justificada y correspondiente indemnización."
+  },
+  {
+    p: "El artículo 35 CE reconoce el derecho al trabajo para los españoles e incluye el derecho a una remuneración suficiente. ¿Qué prohibición expresa añade el precepto?",
+    ops: ["Ningún trabajador podrá ser despedido sin causa justificada", "En ningún caso puede hacerse discriminación por razón de sexo en la remuneración", "Queda prohibida la contratación temporal sin causa objetiva", "Ningún trabajador percibirá salario inferior al mínimo fijado por ley"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 35.1 CE reconoce el derecho a «una remuneración suficiente para satisfacer sus necesidades y las de su familia, sin que en ningún caso pueda hacerse discriminación por razón de sexo». Esta prohibición de discriminación salarial tiene así rango constitucional."
+  },
+  {
+    p: "El artículo 38 CE reconoce la libertad de empresa. ¿En qué marco la sitúa y qué papel otorga a los poderes públicos?",
+    ops: ["En el marco del Estado social; los poderes públicos pueden planificarla libremente", "En el marco de la economía de mercado; los poderes públicos garantizan y protegen su ejercicio y la defensa de la productividad", "En el marco de la economía mixta; los poderes públicos participan directamente en el mercado", "En el marco del interés general; los poderes públicos establecen los sectores en que puede ejercerse"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 38 CE reconoce la libertad de empresa «en el marco de la economía de mercado» y encomienda a los poderes públicos «garantizar y proteger su ejercicio y la defensa de la productividad, de acuerdo con las exigencias de la economía general y, en su caso, de la planificación»."
+  },
+  {
+    p: "Los principios rectores de la política social y económica (Capítulo III del Título I) tienen una naturaleza jurídica diferente a los derechos fundamentales. Según el artículo 53.3 CE, ¿cómo pueden ser alegados ante los tribunales?",
+    ops: ["Directamente como cualquier derecho subjetivo", "Solo podrán ser alegados ante la Jurisdicción ordinaria de acuerdo con lo que dispongan las leyes que los desarrollen", "A través del recurso de amparo ante el Tribunal Constitucional", "Solo en vía contencioso-administrativa mediante recurso colectivo"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 53.3 CE establece que los principios del Capítulo III «sólo podrán ser alegados ante la Jurisdicción ordinaria de acuerdo con lo que dispongan las leyes que los desarrollen». No son directamente justiciables ni protegibles por amparo constitucional."
+  },
+  {
+    p: "El Defensor del Pueblo se regula en el artículo 54 CE. ¿Cuál es su naturaleza jurídica y quién lo designa?",
+    ops: ["Es un órgano consultivo del Gobierno, designado por el Consejo de Ministros", "Es un alto comisionado de las Cortes Generales, designado por éstas", "Es un órgano independiente, designado por el Tribunal Constitucional", "Es un cargo de confianza designado conjuntamente por el Gobierno y las Cortes"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 54 CE define al Defensor del Pueblo como «alto comisionado de las Cortes Generales, designado por éstas para la defensa de los derechos comprendidos en este Título». Su vinculación al Parlamento garantiza su independencia del Gobierno."
+  },
+  {
+    p: "El artículo 53.1 CE establece la vinculación de los poderes públicos a los derechos del Capítulo II. ¿Qué requisito exige para regular el ejercicio de tales derechos?",
+    ops: ["Decreto-ley con posterior convalidación parlamentaria", "Ley, que en todo caso deberá respetar su contenido esencial", "Ley orgánica aprobada por mayoría absoluta", "Reglamento del Consejo de Ministros con informe del Consejo de Estado"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 53.1 CE exige que la regulación del ejercicio de los derechos del Capítulo II se haga «sólo por ley, que en todo caso deberá respetar su contenido esencial». Este «contenido esencial» es el núcleo irreductible del derecho que no puede ser vaciado por el legislador."
+  },
+  {
+    p: "El artículo 55 CE regula la suspensión de derechos y libertades. En estado de excepción o sitio, ¿cuál de los siguientes derechos NO puede ser suspendido según el art. 55.1 CE?",
+    ops: ["La inviolabilidad del domicilio (art. 18.2)", "La presunción de inocencia (art. 24.2)", "El secreto de las comunicaciones (art. 18.3)", "La libertad de reunión (art. 21)"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 55.1 CE enumera los derechos suspendibles: arts. 17, 18.2 y 3, 19, 20.1.a) y d) y 5, 21, 28.2 y 37.2. La presunción de inocencia (art. 24.2) no figura en esa lista y no puede suspenderse ni en estado de excepción ni de sitio."
+  },
+  {
+    p: "El artículo 39 CE protege a la familia. ¿Qué establece sobre la filiación?",
+    ops: ["Los hijos matrimoniales y no matrimoniales tienen diferente protección legal", "Los hijos son iguales ante la ley con independencia de su filiación, y la ley posibilitará la investigación de la paternidad", "El Estado solo protege económicamente a los hijos menores de edad", "La protección se limita a los hijos que convivan con sus progenitores"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 39.2 CE establece que los hijos son «iguales ante la ley con independencia de su filiación» y añade que «la ley posibilitará la investigación de la paternidad». Esto supuso la equiparación constitucional de los hijos matrimoniales y extramatrimoniales."
+  },
+  {
+    p: "El artículo 43 CE reconoce el derecho a la protección de la salud. ¿A quién encomienda organizar y tutelar la salud pública?",
+    ops: ["Al Sistema Nacional de Salud en coordinación con las CCAA", "A los poderes públicos, a través de medidas preventivas y prestaciones y servicios necesarios", "Exclusivamente a las Comunidades Autónomas con competencias sanitarias", "Al Estado con gestión centralizada a través del Ministerio de Sanidad"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 43.2 CE encomienda a los «poderes públicos organizar y tutelar la salud pública a través de medidas preventivas y de las prestaciones y servicios necesarios». La distribución competencial entre Estado y CCAA se realiza mediante el bloque de constitucionalidad."
+  },
+  {
+    p: "El artículo 45 CE regula el medio ambiente. En caso de violación de su apartado 2, ¿qué obligaciones impone el apartado 3?",
+    ops: ["Solo prevé sanciones administrativas proporcionales al daño causado", "Establece sanciones penales o administrativas, así como la obligación de reparar el daño causado", "Impone únicamente la obligación de restaurar el medio ambiente sin sanciones adicionales", "Prevé la responsabilidad civil objetiva del causante del daño ambiental"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 45.3 CE establece que para los infractores «se establecerán sanciones penales o, en su caso, administrativas, así como la obligación de reparar el daño causado». La reparación del daño ambiental tiene así expreso respaldo constitucional."
+  },
+  {
+    p: "El artículo 47 CE reconoce el derecho a la vivienda digna. ¿Qué prevé en relación con las plusvalías urbanísticas?",
+    ops: ["Las plusvalías corresponden íntegramente al propietario del suelo como consecuencia del derecho de propiedad", "La comunidad participará en las plusvalías que genere la acción urbanística de los entes públicos", "Las plusvalías serán captadas exclusivamente por el municipio donde se generen", "El Estado regulará el reparto equitativo de plusvalías entre propietarios y Administración"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 47 CE añade que «la comunidad participará en las plusvalías que genere la acción urbanística de los entes públicos». Esta previsión fundamenta impuestos como el IVTNU (plusvalía municipal)."
+  },
+  {
+    p: "El artículo 49 CE (reformado en 2011) regula los derechos de las personas con discapacidad. ¿Cuál de las siguientes afirmaciones refleja mejor su contenido actual?",
+    ops: ["Los minusválidos tendrán protección especial para su integración social, económica y cultural", "Las personas con discapacidad ejercen los derechos del Título I en condiciones de libertad e igualdad reales y efectivas, y los poderes públicos impulsarán políticas de plena autonomía e inclusión social", "La ley garantizará la igualdad de oportunidades de los discapacitados en el acceso al empleo público", "El Estado creará centros especiales de empleo para la integración laboral de los discapacitados"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> La reforma de 2011 sustituyó el término «minusválidos» por «personas con discapacidad» y reforzó el enfoque de derechos humanos. El art. 49 CE reconoce que ejercen los derechos del Título I «en condiciones de libertad e igualdad reales y efectivas» y obliga a los poderes públicos a impulsar políticas de plena autonomía e inclusión social."
+  },
+  {
+    p: "El artículo 53.2 CE establece la protección reforzada de ciertos derechos. ¿Qué vías prevé para la tutela de las libertades y derechos del art. 14 y la Sección 1ª del Capítulo II?",
+    ops: ["Recurso contencioso-administrativo urgente y recurso de apelación ante el TS", "Procedimiento basado en preferencia y sumariedad ante tribunales ordinarios y, en su caso, recurso de amparo ante el TC", "Recurso de inconstitucionalidad ante el TC y cuestión de inconstitucionalidad", "Denuncia ante el Defensor del Pueblo y posterior recurso ante el TEDH"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 53.2 CE prevé para la tutela del art. 14 y la Sección 1ª del Capítulo II: (1) procedimiento ante tribunales ordinarios «basado en los principios de preferencia y sumariedad» y (2) «en su caso, a través del recurso de amparo ante el Tribunal Constitucional». El amparo se aplica también a la objeción de conciencia (art. 30)."
+  },
+  {
+    p: "El artículo 14 CE consagra el principio de igualdad. ¿Se trata de un derecho ubicado en la Sección 1ª del Capítulo II?",
+    ops: ["Sí, está en la Sección 1ª junto al resto de derechos fundamentales", "No, el art. 14 es el artículo introductorio del Capítulo II y no pertenece a ninguna de sus secciones, aunque goza de la máxima protección del art. 53.2 CE", "No, el art. 14 pertenece a la Sección 2ª de derechos y deberes de los ciudadanos", "Sí, pero solo en su dimensión de igualdad formal, no en su dimensión material"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 14 CE se sitúa antes de la Sección 1ª y no pertenece formalmente a ninguna sección, pero el art. 53.2 CE le otorga la misma protección reforzada que a los derechos de la Sección 1ª (procedimiento preferente y sumario + recurso de amparo)."
+  },
+  {
+    p: "Según el artículo 55.2 CE, ¿cómo puede suspenderse individualmente el plazo de detención de 72 h (art. 17.2) y la inviolabilidad del domicilio y secreto de comunicaciones (art. 18.2 y 3)?",
+    ops: ["Mediante Decreto del Consejo de Ministros en casos de terrorismo, sin necesidad de autorización judicial", "Mediante ley orgánica, con intervención judicial necesaria y adecuado control parlamentario, en relación con investigaciones de bandas armadas o terroristas", "Mediante resolución del Fiscal General del Estado en casos de urgencia excepcional", "Mediante acuerdo del Congreso de los Diputados por mayoría de tres quintos en estado de sitio"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 55.2 CE prevé una suspensión individual (no colectiva) de los arts. 17.2 y 18.2 y 3 «con la necesaria intervención judicial y el adecuado control parlamentario», mediante ley orgánica, en relación con investigaciones sobre bandas armadas o terroristas. La utilización injustificada generará responsabilidad penal."
+  }
+];
+
+// ── ALEATORIZACIÓN ──
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Cada pregunta lleva track de su respuesta correcta original (índice en ops original)
+// Al barajar las ops, hay que recalcular el índice correcto nuevo
+function prepararPreguntas() {
+  const mezcladas = shuffle(BANCO);
+  return mezcladas.map(q => {
+    const respuestaTextoCorrecta = q.ops[q.c];
+    const opsNuevas = shuffle(q.ops);
+    const nuevoC = opsNuevas.indexOf(respuestaTextoCorrecta);
+    return { p: q.p, ops: opsNuevas, c: nuevoC, exp: q.exp };
+  });
+}
+
+let preguntas = [];
+let respondidas = 0, correctas = 0, incorrectas = 0;
+
+function actualizarBarra() {
+  const pct = preguntas.length ? (respondidas / preguntas.length) * 100 : 0;
+  document.getElementById('barraFill').style.width = pct + '%';
+  document.getElementById('barraNum').textContent = respondidas + ' / ' + preguntas.length;
+  document.getElementById('scoreOk').textContent = '✓ ' + correctas;
+  document.getElementById('scoreKo').textContent = '✗ ' + incorrectas;
+}
+
+function responder(qi, oi) {
+  const q = preguntas[qi];
+  const btns = document.querySelectorAll('[data-qi="' + qi + '"]');
+  btns.forEach(b => b.disabled = true);
+  btns.forEach((b, j) => {
+    if (j === q.c) b.classList.add('correcta');
+    else if (j === oi && oi !== q.c) b.classList.add('incorrecta');
+  });
+  document.getElementById('exp-' + qi).classList.add('visible');
+  respondidas++;
+  if (oi === q.c) correctas++; else incorrectas++;
+  actualizarBarra();
+  if (respondidas === preguntas.length) setTimeout(mostrarResultado, 700);
+}
+
+function mostrarResultado() {
+  const pct = Math.round((correctas / preguntas.length) * 100);
+  document.getElementById('resPunt').innerHTML = correctas + ' <span>/ ' + preguntas.length + '</span>';
+  document.getElementById('resCorr').textContent = correctas;
+  document.getElementById('resIncorr').textContent = incorrectas;
+  document.getElementById('resPct').textContent = pct + '%';
+
+  let txt, col, bg;
+  if (pct >= 90)      { txt = '🏆 Sobresaliente'; col = '#166534'; bg = '#f0fdf4'; }
+  else if (pct >= 75) { txt = '✅ Notable';        col = '#1e3a5f'; bg = '#eff6ff'; }
+  else if (pct >= 60) { txt = '📘 Aprobado';       col = '#92400e'; bg = '#fffbeb'; }
+  else                { txt = '❌ Insuficiente — ¡Sigue practicando!'; col = '#991b1b'; bg = '#fef2f2'; }
+
+  document.getElementById('resCalif').innerHTML =
+    '<span class="calif-badge" style="background:' + bg + ';color:' + col + '">' + txt + '</span>';
+
+  const el = document.getElementById('resultado');
+  el.classList.add('visible');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function render() {
+  respondidas = 0; correctas = 0; incorrectas = 0;
+  preguntas = prepararPreguntas();
+  actualizarBarra();
+
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+  const letras = ['A','B','C','D'];
+
+  preguntas.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const opsHTML = q.ops.map((op, j) =>
+      `<button class="opcion" data-qi="${i}" onclick="responder(${i},${j})">
+        <span class="letra">${letras[j]})</span><span>${op}</span>
+      </button>`
+    ).join('');
+
+    card.innerHTML =
+      `<div class="card-num">Pregunta ${i + 1} de ${preguntas.length}</div>
+       <div class="card-pregunta">${q.p}</div>
+       <div class="opciones">${opsHTML}</div>
+       <div class="explicacion" id="exp-${i}">${q.exp}</div>`;
+
+    main.appendChild(card);
+  });
+
+  // Separador y resultado final
+  const sep = document.createElement('div');
+  sep.className = 'divider';
+  sep.textContent = 'Fin del test';
+  main.appendChild(sep);
+
+  const res = document.createElement('div');
+  res.className = 'resultado';
+  res.id = 'resultado';
+  res.innerHTML =
+    `<div class="resultado-eyebrow">Resultado final</div>
+     <h2>Test completado</h2>
+     <div class="resultado-nota" id="resPunt">0 <span>/ 50</span></div>
+     <div id="resCalif"></div>
+     <div class="stats">
+       <div class="stat"><div class="stat-num" id="resCorr" style="color:#166534">0</div><div class="stat-lab">Correctas</div></div>
+       <div class="stat"><div class="stat-num" id="resIncorr" style="color:#991b1b">0</div><div class="stat-lab">Incorrectas</div></div>
+       <div class="stat"><div class="stat-num" id="resPct">0%</div><div class="stat-lab">% aciertos</div></div>
+     </div>
+     <p class="resultado-hint">Desplázate hacia arriba para revisar las explicaciones de cada pregunta.</p>
+     <button class="btn btn-naranja" onclick="render(); window.scrollTo({top:0,behavior:'smooth'})">↺ Repetir con nuevo orden</button>`;
+  main.appendChild(res);
+}
+
+render();
+</script>
+</body>
+</html>
